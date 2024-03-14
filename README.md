@@ -2,7 +2,7 @@
 
 # Deusto Finanzas
 
-![Nombre del Logo](ProyectoProgramacion3/resources/images/DeustoFinanzasLogo.png)
+![Nombre del Logo](ProyectoProgramacion4/resources/images/DeustoFinanzasLogo.png)
 
 </div>
 
