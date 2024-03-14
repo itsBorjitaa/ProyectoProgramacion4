@@ -37,9 +37,28 @@ int main(){
 											  case '4': printf("VER GASTOS DEL USUARIO:\n"); fflush(stdout);break;
 											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
 											  }
-										  }while(opcion!='0');
-									  case '2': break;
-									  case '3': break;
+										  }while(opcion!='0'); break;
+									  case '2':
+										  do{
+											  opcion = menuCategorias();
+											  switch(opcion){
+											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
+											  case '1': printf("AÑADIR CATEGORÍA:\n"); fflush(stdout);break;
+											  case '2': printf("MODIFICAR CATEGORÍA:\n"); fflush(stdout);break;
+											  case '3': printf("ELIMINAR CATEGORÍA:\n"); fflush(stdout);break;
+											  case '4': printf("VER CATEGORÍAS DEL USUARIO:\n"); fflush(stdout);break;
+											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
+											  }
+										  }while(opcion!='0'); break;
+									  case '3':
+										  do{
+											  opcion = menuSaldo();
+											  switch(opcion){
+											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
+											  case '1': printf("MODIFICAR SALDO:\n"); fflush(stdout);break;
+											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
+											  }
+										  }while(opcion!='0'); break;
 									  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
 								  }
 							  }while(opcionU != '0');
