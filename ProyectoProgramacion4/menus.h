@@ -3,5 +3,8 @@
 
 char menuLogin();
 char menuPrincipal();
+char menuGastos();
+char menuCategorias();
+char menuSaldo();
 
 #endif /* MENUS_H_ */

@@ -13,7 +13,7 @@ int main(){
 	do{
 		opcion = menuLogin();
 		switch(opcion){
-			case '0': printf("Saliendo de la aplicación...\n");fflush(stdout);break;
+			case '0': printf("Saliendo de la aplicación...\n"); fflush(stdout);break;
 			case '1': u = pedirUsuario();
 					  pos = buscarUsuario(lu, u.nombre);
 					  if(pos==-1){
@@ -24,9 +24,20 @@ int main(){
 							  do{
 								  opcionU = menuPrincipal();
 								  switch(opcionU){
-									  case '0': printf("Volviendo atrás...\n"); fflush(stdout);
+									  case '0': printf("Cerrando sesión...\n"); fflush(stdout);
 										  break;
-									  case '1': break;
+									  case '1':
+										  do{
+											  opcion = menuGastos();
+											  switch(opcion){
+											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
+											  case '1': printf("AÑADIR GASTO:\n"); fflush(stdout);break;
+											  case '2': printf("MODIFICAR GASTO:\n"); fflush(stdout);break;
+											  case '3': printf("ELIMINAR GASTO:\n"); fflush(stdout);break;
+											  case '4': printf("VER GASTOS DEL USUARIO:\n"); fflush(stdout);break;
+											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
+											  }
+										  }while(opcion!='0');
 									  case '2': break;
 									  case '3': break;
 									  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
