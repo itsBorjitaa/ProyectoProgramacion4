@@ -20,7 +20,7 @@ int main(){
 						  printf("Lo sentimos! No estás registrado\n");
 					  }else{
 						  if(contrasenyaCorrecta(lu.aUsuarios[pos].contrasenya, u.contrasenya)){
-							  printf("Bienvenido!\n"); fflush(stdout);
+							  printf("Bienvenido, %s!\n", u.nombre); fflush(stdout);
 							  do{
 								  opcionU = menuPrincipal();
 								  switch(opcionU){

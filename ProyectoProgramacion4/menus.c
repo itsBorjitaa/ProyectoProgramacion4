@@ -3,6 +3,7 @@
 
 char menuLogin(){
 	char opcion;
+	printf("DEUSTOFINANZAS\n");
 	printf("1. Iniciar Sesión\n");
 	printf("2. Registrarse\n");
 	printf("0. Salir\n");
@@ -15,6 +16,7 @@ char menuLogin(){
 
 char menuPrincipal(){
 	char opcion;
+	printf("SALDO: \n");
 	printf("1. Gastos\n");
 	printf("2. Categorías\n");
 	printf("3. Saldo\n");
