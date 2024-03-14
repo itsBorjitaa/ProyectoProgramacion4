@@ -1,6 +1,7 @@
 #include "menus.h"
 #include "listaUsuarios.h"
 #include <stdio.h>
+#include "gasto.h"
 
 #define NOMFICH "Usuarios.txt"
 int main(){
