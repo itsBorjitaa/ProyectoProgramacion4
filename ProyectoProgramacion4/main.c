@@ -2,6 +2,7 @@
 #include "listaUsuarios.h"
 #include <stdio.h>
 #include "gasto.h"
+//Prueba
 
 #define NOMFICH "Usuarios.txt"
 int main(){
