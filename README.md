@@ -16,43 +16,48 @@
 
 - [Deusto Finanzas](#deusto-finanzas)
   - [Características principales](#características-principales)
-    - [Registro de usuario](#registro-de-usuario)
-    - [Gestión de usuario](#gestión-de-usuario)
-    - [Control de facturas](#control-de-facturas)
-    - [Control de gastos](#control-de-gastos)
+    - [Inicio de sesión](#inicio-de-sesión)
+    - [Gestión de usuarios](#gestión-de-usuarios)
+    - [Menú principal](#menú-principal)
+    - [Gestión de gastos](#gestión-de-gastos)
     - [Gestión de categorías](#gestión-de-categorías)
-    - [Análisis de gastos](#análisis-de-gastos)
+    - [Gestión de saldo](#gestión-de-saldo)
+    - [Generación de reportes y estadísticas](#generación-de-reportes-y-estadísticas)
   - [Instalación](#instalación)
   - [Desarrolladores](#desarrolladores)
   - [Licencia](#licencia)
 
-Bienvenido a Deusto Finanzas, una aplicación de gestión financiera desarrollada en Java Eclipse. Esta aplicación te permite llevar un control detallado de tus finanzas personales, ofreciendo diversas funcionalidades para administrar tus gastos.
+Bienvenido a la versión programada en C y C++ de Deusto Finanzas, una aplicación de gestión financiera desarrollada en Eclipse. Esta aplicación te permite llevar un control detallado de tus finanzas personales, ofreciendo diversas funcionalidades para administrar tus gastos.
 
 ## Características principales
 
-### Registro de usuario
+### Inicio de sesión
 
-- **Creación de usuario:** La aplicación te permite crear un usuario personalizado para almacenar de forma segura todos tus datos en la base de datos.
+- La aplicación presenta un menú de inicio de sesión/registro al comienzo que permite a los usuarios iniciar sesión o registrarse como nuevos usuarios. Los datos de los usuarios (nombre de usuario y contraseña) se almacenan en una base de datos.
 
-### Gestión de usuario
+### Gestión de usuarios
 
-- **Modificar usuario:** En la ventana dedicada a la gestión de usuarios, puedes modificar tanto el nombre como la contraseña asociados a tu cuenta, además de poder darte de baja y borrar todos tus datos.
+- Los usuarios pueden registrarse en la aplicación y base de datos proporcionando un nombre de usuario y una contraseña. Para iniciar sesión los usuarios deben ingresar su nombre de usuario y contraseña, y estos datos se validan con los registros de la base de datos.
 
-### Control de facturas
+### Menú principal
 
-- **Calendario interactivo:** Selecciona una fecha específica en el calendario para añadir o eliminar facturas. Esta característica facilita el seguimiento detallado de tus gastos.
+- Después de iniciar sesión se presenta el menú principal donde se eligen las opciones principales, y además muestra el saldo del usuario. Las opciones principales son: Gastos, Categorías, Saldo y Cerrar Sesión.
 
-### Control de gastos
+### Gestión de gastos
 
-- **Ventana de facturas:** Accede a un control detallado de todas las facturas asociadas a tu cuenta de usuario. Organiza y filtra tus gastos para un análisis más preciso.
+- El menú de gastos permite realizar acciones tales como: Añadir Gasto, Modificar Gasto, Eliminar Gasto, Ver Gastos del Usuario y Volver. Los gastos incluyen información sobre la fecha, la cantidad gastada y la categoría.
 
 ### Gestión de categorías
 
-- **Ventana de categorías:** Controla y organiza tus gastos mediante la asignación de categorías personalizadas. Esta funcionalidad te permite tener una visión clara y organizada de tus finanzas.
+- El sistema de categorías permite organizar los gastos y facilitar su seguimiento. Las categorías se asignan tanto a los usuarios como a los gastos para proporcionar una clasificación adecuada de los mismos.
 
-### Análisis de gastos
+### Gestión de saldo
 
-- **Visualización mensual, trimestral y anual:** Examina tus gastos de manera clara y concisa mediante las opciones de visualización mensual, trimestral y anual.
+- El menú de saldo permite al usuario modificar el saldo que se muestra en el menú principal.
+
+### Generación de reportes y estadísticas
+
+- La aplicación permitirá a los usuarios generar reportes y estadísticas detalladas sobre sus hábitos financieros, proporcionando una visión analítica de sus gastos. Estos reportes podrán incluir información como el total de gastos por categoría, el promedio de gastos mensuales, los gastos más frecuentes, etc. Los usuarios podrán personalizar los parámetros de los reportes para adaptarlos a sus necesidades específicas.
 
 ## Instalación
 
