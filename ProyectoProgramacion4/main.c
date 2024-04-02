@@ -8,7 +8,6 @@
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 
-//PruebaGit
 void escribirLog(const char *log) {
     FILE *logFile = fopen(LOGFILE, "a");
     if (logFile != NULL) {
