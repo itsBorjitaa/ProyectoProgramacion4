@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "gasto.h"
+#include "sqlite3.h"
 
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
