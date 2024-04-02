@@ -1,9 +1,34 @@
 #include "menus.h"
 #include "listaUsuarios.h"
 #include <stdio.h>
+#include <time.h>
 #include "gasto.h"
 
 #define NOMFICH "Usuarios.txt"
+#define LOGFILE "log.log"
+
+void escribirLog(const char *log) {
+    FILE *logFile = fopen(LOGFILE, "a");
+    if (logFile != NULL) {
+        time_t tiempo;
+        struct tm *infoTiempo;
+        time(&tiempo);
+        infoTiempo = localtime(&tiempo);
+
+        char marcaTiempo[20];
+        if (strftime(marcaTiempo, sizeof(marcaTiempo), "%Y-%m-%d %H:%M:%S", infoTiempo) > 0) {
+            fprintf(logFile, "[%s] %s\n", marcaTiempo, log);
+            fclose(logFile);
+        } else {
+            printf("Error al formatear la marca de tiempo.\n");
+            fclose(logFile);
+        }
+    } else {
+        printf("Error al abrir el fichero de log.\n");
+    }
+}
+
+
 int main(){
 	ListaUsuarios lu;
 	Usuario u;
@@ -11,6 +36,9 @@ int main(){
 	char opcion,opcionU;
 
 	volcarFicheroAListaUsuarios(&lu, NOMFICH);
+
+	escribirLog("Prueba de inicio");
+
 	do{
 		opcion = menuLogin();
 		switch(opcion){
