@@ -7,7 +7,7 @@
 
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
-//VOY A MATAR A ADRIAN
+
 void escribirLog(const char *log) {
     FILE *logFile = fopen(LOGFILE, "a");
     if (logFile != NULL) {
