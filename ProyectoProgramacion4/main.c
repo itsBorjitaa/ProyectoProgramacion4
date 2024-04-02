@@ -4,7 +4,7 @@
 #include <time.h>
 #include "gasto.h"
 
-#define NOMFICH "Usuarios.txt"
+#define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 
 void escribirLog(const char *log) {
