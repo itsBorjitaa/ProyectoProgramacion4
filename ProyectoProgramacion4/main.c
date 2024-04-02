@@ -7,6 +7,7 @@
 
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
+#define DB_FILE "db.db"
 
 void escribirLog(const char *log) {
     FILE *logFile = fopen(LOGFILE, "a");
