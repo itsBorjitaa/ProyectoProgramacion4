@@ -50,7 +50,7 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_step(stmt);
 
 	//Tabla Categorias
-	char crearCategoria[]="CREATE TABLE IF NOT EXISTS Categorias (id_c INTEGER NOT NULL, "
+	char crearCategoria[]="CREATE TABLE IF NOT EXISTS Categorias (id_c INTEGER AUTO_INCREMENT, "
 			"categoria STRING NOT NULL, PRIMARY KEY(id_c))";
 	sqlite3_prepare_v2(db, crearCategoria, sizeof(crearCategoria) + 1, &stmt, NULL);
 	sqlite3_step(stmt);

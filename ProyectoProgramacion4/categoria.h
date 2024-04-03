@@ -2,13 +2,12 @@
 #define CATEGORIA_H_
 
 #include "usuario.h"
+#include "sqlite3.h"
 
 typedef struct categoria {
-    int idCategoria;
     char nombreCategoria[20];
-    char nombreUsuario[20];
 }Categoria;
 
-Categoria pedirCategoria(Usuario usuario);
+void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* CATEGORIA_H_ */
