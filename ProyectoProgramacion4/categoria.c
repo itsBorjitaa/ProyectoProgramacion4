@@ -3,6 +3,30 @@
 #include <string.h>
 #include "sqlite3.h"
 
+int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
+	int result,id;
+	char buscarID[]="SELECT id_c FROM categorias WHERE categoria = ?";
+	sqlite3_prepare_v2(db, buscarID, sizeof(buscarID) + 1, &stmt, NULL);
+	sqlite3_bind_text(stmt, 1, categoria.nombreCategoria, sizeof(categoria.nombreCategoria), SQLITE_STATIC);
+	do {
+		result = sqlite3_step(stmt) ;
+		if (result == SQLITE_ROW) {
+			id= sqlite3_column_int(stmt, 0);
+		}
+		} while (result == SQLITE_ROW);
+	sqlite3_finalize(stmt);
+	return id;
+}
+void insertarCategoriasPorUsuario(Usuario usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
+	int id=buscarIDCategoria(categoria,db,stmt);
+
+	char insertarCategoriasPorUsuario[]="INSERT INTO categoriasUsuario VALUES(?, ?)";
+	sqlite3_prepare_v2(db, insertarCategoriasPorUsuario, sizeof(insertarCategoriasPorUsuario) + 1, &stmt, NULL);
+	sqlite3_bind_text(stmt, 1, usuario.nombre, sizeof(usuario.nombre), SQLITE_STATIC);
+	sqlite3_bind_int(stmt, 2, id);
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+}
 void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     Categoria nuevaCategoria;
 
@@ -19,24 +43,7 @@ void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     sqlite3_finalize(stmt);
 
     //Insertamos la categoria en la tabla categoriasPorUsuario
-    //insertarCategoriasPorUsuario(usuario, nuevaCategoria, *db, *stmt);
+    insertarCategoriasPorUsuario(usuario, nuevaCategoria, db, stmt);
 }
-void insertarCategoriasPorUsuario(Usuario usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
-	int id=buscarIDCategoria(categoria.nombreCategoria);
 
-	char insertarCategoriasPorUsuario[]="INSERT INTO categoriasUsuario VALUES(?, ?)";
-	sqlite3_prepare_v2(db, insertarCategoriasPorUsuario, sizeof(insertarCategoriasPorUsuario) + 1, &stmt, NULL);
-	sqlite3_bind_text(stmt, 1, usuario.nombre, sizeof(usuario.nombre), SQLITE_STATIC);
-	sqlite3_bind_int(stmt, 2, id);
-	sqlite3_step(stmt);
-}
-int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
-	int result;
 
-	char buscarID[]="SELECT id_c FROM categorias WHERE categoria = ?";
-	sqlite3_prepare_v2(db, buscarID, sizeof(buscarID) + 1, &stmt, NULL);
-	sqlite3_bind_text(stmt, 1, categoria.nombreCategoria, sizeof(categoria.nombreCategoria), SQLITE_STATIC);
-	result=sqlite3_step(stmt);
-
-	return result;
-}
