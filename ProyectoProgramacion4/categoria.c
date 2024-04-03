@@ -8,7 +8,7 @@ void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
 
     //utiliza el nombre de usuario del usuario que ha iniciado sesión
 
-    printf("Escribe el nombre de la nueva categoría: ");
+    printf("Escribe el nombre de la nueva categoría: "); fflush(stdout); fflush(stdin);
     scanf("%s", nuevaCategoria.nombreCategoria);
 
     //Codigo para ejecutar el statement
@@ -16,6 +16,9 @@ void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, nuevaCategoria.nombreCategoria, sizeof(nuevaCategoria.nombreCategoria), SQLITE_STATIC);
     sqlite3_step(stmt);
+
+    //Insertamos la categoria en la tabla categoriasPorUsuario
+    insertarCategoriasPorUsuario(usuario, nuevaCategoria, *db, *stmt);
 }
 void insertarCategoriasPorUsuario(Usuario usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
 	int id=buscarIDCategoria(categoria.nombreCategoria);
