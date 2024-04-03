@@ -138,12 +138,7 @@ int main(){
 					  }
 				break;
 			case '2': u = pedirUsuario();
-					  pos = buscarUsuario(lu, u.nombre);
-					  if(pos!=-1){
-						  printf("Lo sentimos! Ese nombre de usuario ya existe\n");
-					  }else{
-						  anyadirUsuario(&lu, u);
-					  }
+						  insertarUsuarioBD(u,db,stmt);
 				break;
 			default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
 		}
