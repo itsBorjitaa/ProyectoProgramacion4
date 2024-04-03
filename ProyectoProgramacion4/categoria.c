@@ -12,13 +12,14 @@ void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     scanf("%s", nuevaCategoria.nombreCategoria);
 
     //Codigo para ejecutar el statement
-    char insertarCategoria[] = "INSERT INTO Categorias VALUES(?)";
+    char insertarCategoria[] = "INSERT INTO Categorias(categoria) VALUES(?)";
     sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, nuevaCategoria.nombreCategoria, sizeof(nuevaCategoria.nombreCategoria), SQLITE_STATIC);
     sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
 
     //Insertamos la categoria en la tabla categoriasPorUsuario
-    insertarCategoriasPorUsuario(usuario, nuevaCategoria, *db, *stmt);
+    //insertarCategoriasPorUsuario(usuario, nuevaCategoria, *db, *stmt);
 }
 void insertarCategoriasPorUsuario(Usuario usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
 	int id=buscarIDCategoria(categoria.nombreCategoria);

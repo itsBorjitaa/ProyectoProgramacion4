@@ -37,7 +37,7 @@ void insertarUsuario(Usuario usuario, sqlite3 *db,sqlite3_stmt *stmt) {
 	sqlite3_step(stmt);
 }
 
-Usuario buscarUsuario(char nombre, sqlite3 *db,sqlite3_stmt *stmt) {
+/*Usuario buscarUsuario(char nombre, sqlite3 *db,sqlite3_stmt *stmt) {
 	Usuario usuario;
 
 	//Codigo para ejecutar los statements
@@ -52,7 +52,7 @@ Usuario buscarUsuario(char nombre, sqlite3 *db,sqlite3_stmt *stmt) {
 	usuario.contrasenya = sqlite3_step(stmt);
 
 	return usuario;
-}
+}*/
 
 
 

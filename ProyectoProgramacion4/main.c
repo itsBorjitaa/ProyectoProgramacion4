@@ -4,7 +4,7 @@
 #include <time.h>
 #include "gasto.h"
 #include "sqlite3.h"
-
+#include "categoria.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 #define DB_FILE "db.db"
@@ -30,7 +30,7 @@ void escribirLog(const char *log) {
     }
 }
 void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
-	sqlite3_open(DB_FILE, &db);
+
 
 	//Crear tablas si no existen:
 
@@ -48,12 +48,14 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 			"FOREIGN KEY(usuarioF) REFERENCES Usuario(usuario) ON DELETE CASCADE)";
 	sqlite3_prepare_v2(db, crearGasto, sizeof(crearGasto) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
 
 	//Tabla Categorias
-	char crearCategoria[]="CREATE TABLE IF NOT EXISTS Categorias (id_c INTEGER AUTO_INCREMENT, "
-			"categoria STRING NOT NULL, PRIMARY KEY(id_c))";
+	char crearCategoria[]="CREATE TABLE IF NOT EXISTS Categorias (id_c INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+			"categoria STRING NOT NULL)";
 	sqlite3_prepare_v2(db, crearCategoria, sizeof(crearCategoria) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
 
 	//Tabla CategoriasUsuario
 	char crearCategoriasUsuario[]="CREATE TABLE IF NOT EXISTS categoriasUsuario (usuario_cu String NOT NULL, "
@@ -62,6 +64,8 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 			"ON DELETE CASCADE, FOREIGN KEY(id_c_cu) REFERENCES  Categorias(id_c) ON DELETE CASCADE)";
 	sqlite3_prepare_v2(db, crearCategoriasUsuario, sizeof(crearCategoriasUsuario) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+
 }
 
 int main(){
@@ -71,9 +75,9 @@ int main(){
 	Usuario u;
 	int pos;
 	char opcion,opcionU;
+	sqlite3_open(DB_FILE, &db);
 	InicializarBD(db,stmt);
 	volcarFicheroAListaUsuarios(&lu, NOMFICH);
-
 	escribirLog("Prueba de inicio");
 
 	do{
@@ -109,7 +113,7 @@ int main(){
 											  opcion = menuCategorias();
 											  switch(opcion){
 											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
-											  case '1': printf("AÑADIR CATEGORÍA:\n"); fflush(stdout);break;
+											  case '1': printf("AÑADIR CATEGORÍA:\n"); fflush(stdout);crearCategoria(u,db,stmt);break;
 											  case '2': printf("MODIFICAR CATEGORÍA:\n"); fflush(stdout);break;
 											  case '3': printf("ELIMINAR CATEGORÍA:\n"); fflush(stdout);break;
 											  case '4': printf("VER CATEGORÍAS DEL USUARIO:\n"); fflush(stdout);break;
