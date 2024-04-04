@@ -6,6 +6,7 @@
 #include "sqlite3.h"
 #include "categoria.h"
 #include "listaCategorias.h"
+#include "usuario.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 #define DB_FILE "db.db"
@@ -73,8 +74,8 @@ int main(){
 	sqlite3 *db;//
 	sqlite3_stmt *stmt;
 	ListaUsuarios lu;
+	Usuario u,u2,temp,temp2;
 	ListaCategoria lc;
-	Usuario u;
 	int pos, i;
 	char opcion,opcionU;
 	sqlite3_open(DB_FILE, &db);
@@ -82,21 +83,24 @@ int main(){
 	volcarFicheroAListaUsuarios(&lu, NOMFICH);
 	escribirLog("Prueba de inicio");
 
+
 	do{
 		opcion = menuLogin();
 		switch(opcion){
 			case '0': printf("Saliendo de la aplicación...\n"); fflush(stdout);break;
-			case '1': u = pedirUsuario();
-					  pos = buscarUsuario(lu, u.nombre);
-					  if(pos==-1){
-						  printf("Lo sentimos! No estás registrado\n");
-					  }else{
-						  if(contrasenyaCorrecta(lu.aUsuarios[pos].contrasenya, u.contrasenya)){
-							  printf("Bienvenido, %s!\n", u.nombre); fflush(stdout);
+			case '1':
+				u=pedirUsuario();
+				temp=buscarUsuarioBD(u,db,stmt);
+				if(strcmp(temp.nombre,u.nombre)>0||strcmp(temp.nombre,u.nombre)<0){
+				  printf("Lo sentimos! No estás registrado\n");
+				}else{
+				  if(strcmp(temp.contrasenya,u.contrasenya)==0){
+					  printf("Bienvenido, %s!\n", u.nombre); fflush(stdout);
+
 							  do{
 								  opcionU = menuPrincipal();
 								  switch(opcionU){
-									  case '0': printf("Cerrando sesión...\n"); fflush(stdout);
+									  case '0': printf("Cerrando sesión...\n");sqlite3_close(db); fflush(stdout);
 										  break;
 									  case '1':
 										  do{
@@ -139,11 +143,22 @@ int main(){
 						  }
 					  }
 				break;
-			case '2': u = pedirUsuario();
-						  insertarUsuarioBD(u,db,stmt);
-				break;
-			default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-		}
+			case '2':
+						u2 = pedirUsuario();
+						temp2=buscarUsuarioBD(u,db,stmt);
+						 if(strcmp(temp2.nombre,u.nombre)==0){
+									  printf("Este nombre de usuario ya existe!");
+									  fflush(stdout);
+								  }else{
+									  insertarUsuarioBD(u,db,stmt);
+									  printf("Usuario creado correctamente!");
+									  fflush(stdout);
+								  }
+
+							break;
+						default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
+					}
+
 	}while(opcion!='0');
 	volcarListaUsuariosAFichero(lu, NOMFICH);
 	free(lu.aUsuarios);

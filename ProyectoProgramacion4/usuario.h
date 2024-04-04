@@ -8,7 +8,7 @@ typedef struct usuario{
 
 Usuario pedirUsuario();
 int contrasenyaCorrecta(char *conU, char *con);
-void insertarUsuario(Usuario usuario, sqlite3 *db,sqlite3_stmt *stmt);
-//Usuario buscarUsuario(char nombre, sqlite3 *db,sqlite3_stmt *stmt);
+void insertarUsuarioBD(Usuario usuario, sqlite3 *db,sqlite3_stmt *stmt);
+Usuario buscarUsuarioBD(Usuario u, sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* USUARIO_H_ */
