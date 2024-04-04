@@ -9,5 +9,6 @@ typedef struct categoria {
 }Categoria;
 
 void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt);
+Categoria buscarCategoriaPorId(int id, sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* CATEGORIA_H_ */

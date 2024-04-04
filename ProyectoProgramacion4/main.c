@@ -5,6 +5,7 @@
 #include "gasto.h"
 #include "sqlite3.h"
 #include "categoria.h"
+#include "listaCategorias.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 #define DB_FILE "db.db"
@@ -72,8 +73,9 @@ int main(){
 	sqlite3 *db;//
 	sqlite3_stmt *stmt;
 	ListaUsuarios lu;
+	ListaCategoria lc;
 	Usuario u;
-	int pos;
+	int pos, i;
 	char opcion,opcionU;
 	sqlite3_open(DB_FILE, &db);
 	InicializarBD(db,stmt);
@@ -115,7 +117,7 @@ int main(){
 											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
 											  case '1': printf("AÑADIR CATEGORÍA:\n"); fflush(stdout);crearCategoria(u,db,stmt);break;
 											  case '2': printf("MODIFICAR CATEGORÍA:\n"); fflush(stdout);break;
-											  case '3': printf("ELIMINAR CATEGORÍA:\n"); fflush(stdout);break;
+											  case '3': printf("ELIMINAR CATEGORÍA:\n"); fflush(stdout); lc = cargarCategoria(u,db,stmt); imprimirLista(lc); break;
 											  case '4': printf("VER CATEGORÍAS DEL USUARIO:\n"); fflush(stdout);break;
 											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
 											  }

@@ -45,5 +45,18 @@ void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     //Insertamos la categoria en la tabla categoriasPorUsuario
     insertarCategoriasPorUsuario(usuario, nuevaCategoria, db, stmt);
 }
+Categoria buscarCategoriaPorId(int id, sqlite3 *db,sqlite3_stmt *stmt) {
+	Categoria cat;
+	int result;
+
+	char buscarCat[]="SELECT categoria FROM categorias WHERE id_c = ?";
+		sqlite3_prepare_v2(db, buscarCat, sizeof(buscarCat) + 1, &stmt, NULL);
+		sqlite3_bind_text(stmt, 1, id, sizeof(id), SQLITE_STATIC);
+		result = sqlite3_step(stmt);
+		strcpy(cat.nombreCategoria,(char) result);
+		sqlite3_finalize(stmt);
+
+	return cat;
+}
 
 
