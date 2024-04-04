@@ -31,9 +31,8 @@ void escribirLog(const char *log) {
         printf("Error al abrir el fichero de log.\n");
     }
 }
+
 void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
-
-
 	//Crear tablas si no existen:
 
 	//Tabla Usuarios
@@ -71,77 +70,135 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 }
 
 int main(){
-	sqlite3 *db;//
+	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	ListaUsuarios lu;
 	Usuario *u;
 	ListaCategoria lc;
 	int temp,idActual;
 	char opcion,opcionU;
+
 	sqlite3_open(DB_FILE, &db);
 	InicializarBD(db,stmt);
-	volcarFicheroAListaUsuarios(&lu, NOMFICH);
-	escribirLog("Prueba de inicio");
-
 
 	do{
 		opcion = menuLogin();
 		switch(opcion){
-			case '0': printf("Saliendo de la aplicación...\n"); fflush(stdout);break;
+			case '0':
+				printf("Saliendo de la aplicación...\n");
+				fflush(stdout);
+				escribirLog("Saliendo de la aplicación");
+				break;
 			case '1':
-					idActual=iniciarSesionBD(u,db,stmt);
-				  if(idActual>0){
-					  printf("Bienvenido, %s!\n", u->nombre); fflush(stdout);
-
-							  do{
-								  opcionU = menuPrincipal();
-								  switch(opcionU){
-									  case '0': printf("Cerrando sesión...\n");sqlite3_close(db); fflush(stdout);
-										  break;
-									  case '1':
-										  do{
-											  opcion = menuGastos();
-											  switch(opcion){
-											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
-											  case '1': printf("AÑADIR GASTO:\n"); fflush(stdout);break;
-											  case '2': printf("MODIFICAR GASTO:\n"); fflush(stdout);break;
-											  case '3': printf("ELIMINAR GASTO:\n"); fflush(stdout);break;
-											  case '4': printf("VER GASTOS DEL USUARIO:\n"); fflush(stdout);break;
-											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-											  }
-										  }while(opcion!='0'); break;
-									  case '2':
-										  do{
-											  opcion = menuCategorias();
-											  switch(opcion){
-											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
-											  case '1': printf("AÑADIR CATEGORÍA:\n"); fflush(stdout);crearCategoria(u,db,stmt);break;
-											  case '2': printf("MODIFICAR CATEGORÍA:\n"); fflush(stdout);break;
-											  case '3': printf("ELIMINAR CATEGORÍA:\n"); fflush(stdout); lc = cargarCategoria(u,db,stmt); imprimirLista(lc); break;
-											  case '4': printf("VER CATEGORÍAS DEL USUARIO:\n"); fflush(stdout);break;
-											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-											  }
-										  }while(opcion!='0'); break;
-									  case '3':
-										  do{
-											  opcion = menuSaldo();
-											  switch(opcion){
-											  case '0': printf("Volviendo atrás...\n"); fflush(stdout);break;
-											  case '1': printf("MODIFICAR SALDO:\n"); fflush(stdout);break;
-											  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-											  }
-										  }while(opcion!='0'); break;
-									  default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-								  }
-							  }while(opcionU != '0');
-						  }else{
-							  printf("Lo sentimos! La contraseña no es correcta\n");fflush(stdout);
-						  }
+				idActual=iniciarSesionBD(u,db,stmt);
+				if(idActual>0){
+					printf("Bienvenido, %s!\n", u->nombre); fflush(stdout);escribirLog("Sesión iniciada");fflush(stdout);
+						do{
+							opcionU = menuPrincipal();
+							switch(opcionU){
+								case '0':
+									printf("Cerrando sesión...\n");
+									sqlite3_close(db);
+									fflush(stdout);
+									escribirLog("Cerrando sesión");
+									break;
+								case '1':
+									do{
+										opcion = menuGastos();
+										switch(opcion){
+											case '0':
+												printf("Volviendo atrás...\n");
+												fflush(stdout);
+												break;
+											case '1':
+												printf("AÑADIR GASTO:\n");
+												fflush(stdout);
+												break;
+										    case '2':
+										    	printf("MODIFICAR GASTO:\n");
+										    	fflush(stdout);
+										    	break;
+										    case '3':
+										    	printf("ELIMINAR GASTO:\n");
+										    	fflush(stdout);
+										    	break;
+										    case '4':
+										    	printf("VER GASTOS DEL USUARIO:\n");
+										    	fflush(stdout);
+										    	break;
+										    default:
+										    	printf("ERROR! La opción seleccionada no es correcta\n");
+										    	fflush(stdout);
+										    	escribirLog("ERROR! La opción seleccionada no es correcta");
+										}
+									}while(opcion!='0');
+									break;
+								case '2':
+									do{
+										opcion = menuCategorias();
+										switch(opcion){
+											case '0':
+												printf("Volviendo atrás...\n");
+												fflush(stdout);
+												break;
+										    case '1':
+										    	printf("AÑADIR CATEGORÍA:\n");
+										    	fflush(stdout);
+										    	crearCategoria(u,db,stmt);
+										    	break;
+										    case '2':
+										    	printf("MODIFICAR CATEGORÍA:\n");
+										    	fflush(stdout);
+										    	break;
+										    case '3':
+										    	printf("ELIMINAR CATEGORÍA:\n");
+										    	fflush(stdout);
+										    	lc = cargarCategoria(u,db,stmt);
+										    	imprimirLista(lc);
+										    	break;
+										    case '4':
+										    	printf("VER CATEGORÍAS DEL USUARIO:\n");
+										    	fflush(stdout);
+										    	break;
+										    default:
+										    	printf("ERROR! La opción seleccionada no es correcta\n");
+										    	fflush(stdout);
+										    	escribirLog("ERROR! La opción seleccionada no es correcta");
+										}
+									}while(opcion!='0');
+									break;
+								case '3':
+									do{
+										opcion = menuSaldo();
+										switch(opcion){
+											case '0':
+												printf("Volviendo atrás...\n");
+												fflush(stdout);
+												break;
+										    case '1':
+										    	printf("MODIFICAR SALDO:\n");
+										    	fflush(stdout);
+										    	break;
+										    default:
+										    	printf("ERROR! La opción seleccionada no es correcta\n");
+										    	fflush(stdout);
+										    	escribirLog("ERROR! La opción seleccionada no es correcta");
+										}
+									}while(opcion!='0');
+									break;
+								default:
+									printf("ERROR! La opción seleccionada no es correcta\n");
+									fflush(stdout);
+									escribirLog("ERROR! La opción seleccionada no es correcta");
+							}
+						}while(opcionU != '0');
+					}else{
+						printf("ERROR! La contraseña no es correcta\n");
+						fflush(stdout);
+						escribirLog("ERROR! La contraseña no es correcta");
+					}
 				break;
 			case '2':
-						insertarUsuarioBD(db,stmt);
+				insertarUsuarioBD(db,stmt);
 		}
 	}while(opcion!='0');
-	volcarListaUsuariosAFichero(lu, NOMFICH);
-	free(lu.aUsuarios);
 }

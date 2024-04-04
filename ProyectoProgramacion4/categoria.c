@@ -17,6 +17,7 @@ int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_finalize(stmt);
 	return id;
 }
+
 void insertarCategoriasPorUsuario(Usuario *usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
 	int id=buscarIDCategoria(categoria,db,stmt);
 
@@ -27,6 +28,7 @@ void insertarCategoriasPorUsuario(Usuario *usuario,Categoria categoria, sqlite3 
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 }
+
 void crearCategoria(Usuario *usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     Categoria nuevaCategoria;
 
@@ -44,7 +46,10 @@ void crearCategoria(Usuario *usuario,sqlite3 *db,sqlite3_stmt *stmt) {
 
     //Insertamos la categoria en la tabla categoriasPorUsuario
     insertarCategoriasPorUsuario(usuario, nuevaCategoria, db, stmt);
+    printf("Categoría creada correctamente!\n");
+    escribirLog("Categoría creada correctamente");
 }
+
 Categoria buscarCategoriaPorId(int id, sqlite3 *db,sqlite3_stmt *stmt) {
 	Categoria cat;
 	int result;

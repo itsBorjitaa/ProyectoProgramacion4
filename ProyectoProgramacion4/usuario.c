@@ -3,29 +3,6 @@
 #include <stdio.h>
 #include "sqlite3.h"
 
-Usuario pedirUsuario(){
-	Usuario u;
-
-	printf("Introduce tu nombre: ");
-	fflush(stdout);
-	fflush(stdin);
-	scanf("%s",u.nombre);
-
-	printf("Introduce tu contraseña: ");
-	fflush(stdout);
-	fflush(stdin);
-	scanf("%s",u.contrasenya);
-	return u;
-}
-
-int contrasenyaCorrecta(char *conU,char *con){
-	int correcta = 0;
-	if(strcmp(conU, con)==0){
-		correcta = 1;
-	}
-	return correcta;
-}
-
 void insertarUsuarioBD(sqlite3 *db,sqlite3_stmt *stmt) {
 	int existe;
 	char nombre[20],contrasenya[20];
@@ -40,16 +17,18 @@ void insertarUsuarioBD(sqlite3 *db,sqlite3_stmt *stmt) {
 	//Codigo para ejecutar el statement
 	existe=existeUsuarioBD(nombre,db,stmt);
 	if(existe>0){
-		printf("Este usuario ya existe!");
+		printf("ERROR! Este usuario ya existe!\n");
 		fflush(stdout);
+		escribirLog("ERROR! Este usuario ya existe");
 	}else{
-
 	char insertarUsuario[] = "INSERT INTO Usuario(usuarioNombre,contrasenya) VALUES(?, ?)";
 	sqlite3_prepare_v2(db, insertarUsuario, sizeof(insertarUsuario) + 1, &stmt, NULL);
 	sqlite3_bind_text(stmt, 1, nombre, sizeof(nombre), SQLITE_STATIC);
 	sqlite3_bind_text(stmt, 2, contrasenya, sizeof(contrasenya), SQLITE_STATIC);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
+	printf("Se ha registrado correctamente!\n");
+	escribirLog("Se ha registrado correctamente");
 	}
 }
 
@@ -87,6 +66,7 @@ int iniciarSesionBD(Usuario *u,sqlite3 *db,sqlite3_stmt *stmt){
 	}
 	return id;
 }
+
 int existeUsuarioBD(char nombre[],sqlite3 *db,sqlite3_stmt *stmt){
 	int result,size=0;
 		char existeUsuario[]="SELECT * FROM usuario";
