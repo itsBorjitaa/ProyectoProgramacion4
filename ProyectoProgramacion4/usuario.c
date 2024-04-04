@@ -75,7 +75,7 @@ int iniciarSesionBD(Usuario *u,sqlite3 *db,sqlite3_stmt *stmt){
 	do {
 		result = sqlite3_step(stmt) ;
 		if (result == SQLITE_ROW) {
-			if(strcmp(u->nombre,sqlite3_column_text(stmt,1))==0||strcmp(u->contrasenya,sqlite3_column_text(stmt,2))==0){
+			if(strcmp(u->nombre,sqlite3_column_text(stmt,1))==0&&strcmp(u->contrasenya,sqlite3_column_text(stmt,2))==0){
 				id=sqlite3_column_int(stmt,0);
 		}
 		}
