@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-ListaCategoria cargarCategoria(Usuario u, sqlite3 *db,sqlite3_stmt *stmt) {
+ListaCategoria cargarCategoria(Usuario *u, sqlite3 *db,sqlite3_stmt *stmt) {
 	ListaCategoria lc;
 	int resultCant, resultadoId, i, cantId = 0;
 
 	//Consigo el numero de categorias que hay en la BD
 	char buscarCantCat[] = "SELECT COUNT id_c_cu FROM categoriasUsuario WHERE usuario_cu = ?";
 	sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
-	sqlite3_bind_text(stmt, 1, u.nombre, sizeof(u.nombre), SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 1, u->nombre, sizeof(u->nombre), SQLITE_STATIC);
 	do {
 		resultCant = sqlite3_step(stmt) ;
 	        if (resultCant == SQLITE_ROW) {
@@ -21,7 +21,7 @@ ListaCategoria cargarCategoria(Usuario u, sqlite3 *db,sqlite3_stmt *stmt) {
 	int array[lc.tam];
 	char buscarIdCat[] = "SELECT id_c_cu FROM categoriasUsuario WHERE usuario_cu = ?";
 		sqlite3_prepare_v2(db, buscarIdCat, sizeof(buscarIdCat) + 1, &stmt, NULL);
-		sqlite3_bind_text(stmt, 1, u.nombre, sizeof(u.nombre), SQLITE_STATIC);
+		sqlite3_bind_text(stmt, 1, u->nombre, sizeof(u->nombre), SQLITE_STATIC);
 		do {
 			resultadoId = sqlite3_step(stmt);
 		        if (resultadoId == SQLITE_ROW) {

@@ -37,17 +37,17 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 	//Crear tablas si no existen:
 
 	//Tabla Usuarios
-	char crearUsuario[] ="CREATE TABLE IF NOT EXISTS Usuario (usuario VARCHAR(255) NOT NULL,"
-			"contrasenya VARCHAR(255) NOT NULL,PRIMARY KEY(usuario))";//Statement crear usuario
+	char crearUsuario[] ="CREATE TABLE IF NOT EXISTS Usuario (id_u INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,usuarioNombre STRING NOT NULL,"
+			"contrasenya STRING NOT NULL)";//Statement crear usuario
 	sqlite3_prepare_v2(db, crearUsuario, sizeof(crearUsuario) + 1, &stmt, NULL);//Cargamos el stmt
 	sqlite3_step(stmt);//Ejecutamos el statement
 
 	//Tabla Gastos
 	char crearGasto[]="CREATE TABLE IF NOT EXISTS Gastos "
-			"(codigo INTEGER NOT NULL DEFAULT 0, usuarioF TEXT NOT NULL, "
+			"(codigo INTEGER NOT NULL DEFAULT 0, id_u_c INTEGER NOT NULL, "
 			"fecha TEXT NOT NULL, concepto TEXT NOT NULL, "
 			"coste REAL NOT NULL, categoria TEXT NOT NULL,PRIMARY KEY(codigo), "
-			"FOREIGN KEY(usuarioF) REFERENCES Usuario(usuario) ON DELETE CASCADE)";
+			"FOREIGN KEY(id_u_c) REFERENCES Usuario(id_u) ON DELETE CASCADE)";
 	sqlite3_prepare_v2(db, crearGasto, sizeof(crearGasto) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
@@ -60,9 +60,9 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_finalize(stmt);
 
 	//Tabla CategoriasUsuario
-	char crearCategoriasUsuario[]="CREATE TABLE IF NOT EXISTS categoriasUsuario (usuario_cu String NOT NULL, "
-			"id_c_cu INTEGER NOT NULL,PRIMARY KEY(usuario_cu, id_c_cu), "
-			"FOREIGN KEY(usuario_cu) REFERENCES Usuario(usuario) "
+	char crearCategoriasUsuario[]="CREATE TABLE IF NOT EXISTS categoriasUsuario (id_u_cu INTEGER NOT NULL, "
+			"id_c_cu INTEGER NOT NULL,PRIMARY KEY(id_u_cu, id_c_cu), "
+			"FOREIGN KEY(id_u_cu) REFERENCES Usuario(id_u) "
 			"ON DELETE CASCADE, FOREIGN KEY(id_c_cu) REFERENCES  Categorias(id_c) ON DELETE CASCADE)";
 	sqlite3_prepare_v2(db, crearCategoriasUsuario, sizeof(crearCategoriasUsuario) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
@@ -74,9 +74,9 @@ int main(){
 	sqlite3 *db;//
 	sqlite3_stmt *stmt;
 	ListaUsuarios lu;
-	Usuario u,u2,temp,temp2;
+	Usuario *u;
 	ListaCategoria lc;
-	int pos, i;
+	int temp,idActual;
 	char opcion,opcionU;
 	sqlite3_open(DB_FILE, &db);
 	InicializarBD(db,stmt);
@@ -89,13 +89,9 @@ int main(){
 		switch(opcion){
 			case '0': printf("Saliendo de la aplicación...\n"); fflush(stdout);break;
 			case '1':
-				u=pedirUsuario();
-				temp=buscarUsuarioBD(u,db,stmt);
-				if(strcmp(temp.nombre,u.nombre)>0||strcmp(temp.nombre,u.nombre)<0){
-				  printf("Lo sentimos! No estás registrado\n");
-				}else{
-				  if(strcmp(temp.contrasenya,u.contrasenya)==0){
-					  printf("Bienvenido, %s!\n", u.nombre); fflush(stdout);
+					idActual=iniciarSesionBD(u,db,stmt);
+				  if(idActual>0){
+					  printf("Bienvenido, %s!\n", u->nombre); fflush(stdout);
 
 							  do{
 								  opcionU = menuPrincipal();
@@ -141,24 +137,10 @@ int main(){
 						  }else{
 							  printf("Lo sentimos! La contraseña no es correcta\n");fflush(stdout);
 						  }
-					  }
 				break;
 			case '2':
-						u2 = pedirUsuario();
-						temp2=buscarUsuarioBD(u,db,stmt);
-						 if(strcmp(temp2.nombre,u.nombre)==0){
-									  printf("Este nombre de usuario ya existe!");
-									  fflush(stdout);
-								  }else{
-									  insertarUsuarioBD(u,db,stmt);
-									  printf("Usuario creado correctamente!");
-									  fflush(stdout);
-								  }
-
-							break;
-						default: printf("ERROR! La opción seleccionada no es correcta\n");fflush(stdout);
-					}
-
+						insertarUsuarioBD(db,stmt);
+		}
 	}while(opcion!='0');
 	volcarListaUsuariosAFichero(lu, NOMFICH);
 	free(lu.aUsuarios);

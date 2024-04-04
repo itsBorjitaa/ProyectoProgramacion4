@@ -17,17 +17,17 @@ int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_finalize(stmt);
 	return id;
 }
-void insertarCategoriasPorUsuario(Usuario usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
+void insertarCategoriasPorUsuario(Usuario *usuario,Categoria categoria, sqlite3 *db,sqlite3_stmt *stmt){
 	int id=buscarIDCategoria(categoria,db,stmt);
 
 	char insertarCategoriasPorUsuario[]="INSERT INTO categoriasUsuario VALUES(?, ?)";
 	sqlite3_prepare_v2(db, insertarCategoriasPorUsuario, sizeof(insertarCategoriasPorUsuario) + 1, &stmt, NULL);
-	sqlite3_bind_text(stmt, 1, usuario.nombre, sizeof(usuario.nombre), SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 1, usuario->nombre, sizeof(usuario->nombre), SQLITE_STATIC);
 	sqlite3_bind_int(stmt, 2, id);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 }
-void crearCategoria(Usuario usuario,sqlite3 *db,sqlite3_stmt *stmt) {
+void crearCategoria(Usuario *usuario,sqlite3 *db,sqlite3_stmt *stmt) {
     Categoria nuevaCategoria;
 
     //utiliza el nombre de usuario del usuario que ha iniciado sesión
