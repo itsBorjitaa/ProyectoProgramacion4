@@ -154,7 +154,7 @@ int main(){
 										    	break;
 										    case '4':
 										    	printf("VER CATEGORÍAS DEL USUARIO:\n");
-										    	cargarCategoria(idActual,db,stmt);
+										    	imprimirCategoria(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    default:
