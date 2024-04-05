@@ -5,7 +5,6 @@
 #include "gasto.h"
 #include "sqlite3.h"
 #include "categoria.h"
-#include "listaCategorias.h"
 #include "usuario.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
@@ -73,7 +72,6 @@ int main(){
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
 	Usuario *u;
-	ListaCategoria lc;
 	int temp,idActual;
 	char opcion,opcionU;
 
@@ -152,11 +150,10 @@ int main(){
 										    case '3':
 										    	printf("ELIMINAR CATEGORÍA:\n");
 										    	fflush(stdout);
-										    	lc = cargarCategoria(u,db,stmt);
-										    	imprimirLista(lc);
 										    	break;
 										    case '4':
 										    	printf("VER CATEGORÍAS DEL USUARIO:\n");
+										    	cargarCategoria(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    default:

@@ -71,7 +71,6 @@ int existeUsuarioBD(char nombre[],sqlite3 *db,sqlite3_stmt *stmt){
 	int result,size=0;
 		char existeUsuario[]="SELECT * FROM usuario";
 		sqlite3_prepare_v2(db, existeUsuario, -1, &stmt, NULL);
-		sqlite3_bind_text(stmt,1,nombre,-1,SQLITE_STATIC);
 		result=sqlite3_step(stmt);
 		while (result == SQLITE_ROW){
 			if(strcmp(nombre,sqlite3_column_text(stmt,1))==0){
