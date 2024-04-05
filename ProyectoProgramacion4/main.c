@@ -143,7 +143,7 @@ int main(){
 										    case '1':
 										    	printf("AÑADIR CATEGORÍA:\n");
 										    	fflush(stdout);
-										    	crearCategoria(u,db,stmt);
+										    	crearCategoria(idActual,db,stmt);
 										    	break;
 										    case '2':
 										    	printf("MODIFICAR CATEGORÍA:\n");
