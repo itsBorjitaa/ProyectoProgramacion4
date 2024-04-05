@@ -54,6 +54,24 @@ void crearCategoria(int idUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
     escribirLog("Categoría creada correctamente");
 }
 
+void crearCategoria2(int idUsuario,Categoria cat,sqlite3 *db,sqlite3_stmt *stmt) {
+	int id;
+
+    //utiliza el nombre de usuario del usuario que ha iniciado sesión
+
+    //Codigo para ejecutar el statement
+    char insertarCategoria[] = "INSERT INTO Categorias(categoria) VALUES(?)";
+    sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    //Insertamos la categoria en la tabla categoriasPorUsuario
+    insertarCategoriasPorUsuario(idUsuario, cat, db, stmt);
+    printf("Categoría creada correctamente!\n");
+    escribirLog("Categoría creada correctamente");
+}
+
 Categoria buscarCategoriaPorId(int id, sqlite3 *db,sqlite3_stmt *stmt) {
 	Categoria cat;
 	int result;
@@ -106,7 +124,7 @@ void imprimirCategoria(int idUsuario, sqlite3 *db,sqlite3_stmt *stmt) {
 }
 
 void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
-	Categoria cat;
+	Categoria cat,cat2;
 	int cant = 0, id;
 
 	imprimirCategoria(idU, db, stmt);
@@ -115,6 +133,8 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 
 	id = buscarIDCategoria(cat, db, stmt);
 	if (id != 0){
+		printf("Escribe el nuevo nombre de la categoria: ");fflush(stdout); fflush(stdin);
+		scanf("%s",cat2.nombreCategoria);
 		//Encuentro cuantas veces aparece la categoria en categorias usuario
 		char buscarCantCat[] = "SELECT * FROM categoriasUsuario";
 		sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
@@ -128,13 +148,13 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			//Si solo aparece una vez se cambia el nombre de la categoria directamente
 			char modificarCat[] = "UPDATE categorias SET categoria = ? WHERE id_c = ?";
 			sqlite3_prepare_v2(db, modificarCat, sizeof(modificarCat) + 1, &stmt, NULL);
-			sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
+			sqlite3_bind_text(stmt, 1, cat2.nombreCategoria, sizeof(cat2.nombreCategoria), SQLITE_STATIC);
 			sqlite3_bind_int(stmt, 2, id);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
 		} else {
 			//Si aparece mas de una vez se crea una nueva categoria con ese nombre y su respectiva linea en la tabla CategoriasPorUsuario
-			insertarCategoriasPorUsuario(idU, cat, db, stmt);
+			crearCategoria2(idU,cat2, db, stmt);
 			//Luego se elimina la linea de categoria por usuario de el susuario y la categoria anterior
 			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
@@ -143,9 +163,10 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
 		}
+	}
+	else{
 		printf("ERROR: Esta categoria no existe!!\n"); fflush(stdout);
 	}
-
 
 
 }

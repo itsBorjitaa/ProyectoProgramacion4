@@ -146,6 +146,7 @@ int main(){
 										    case '2':
 										    	printf("MODIFICAR CATEGORÍA:\n");
 										    	fflush(stdout);
+										    	modificarCategoria(idActual,db,stmt);
 										    	break;
 										    case '3':
 										    	printf("ELIMINAR CATEGORÍA:\n");
