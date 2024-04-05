@@ -5,15 +5,16 @@
 
 int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
 	int result,id = 0;
-	char buscarID[]="SELECT id_c FROM categorias WHERE categoria = ?";
+	char buscarID[]="SELECT * FROM categorias";
 	sqlite3_prepare_v2(db, buscarID, sizeof(buscarID) + 1, &stmt, NULL);
 	sqlite3_bind_text(stmt, 1, categoria.nombreCategoria, sizeof(categoria.nombreCategoria), SQLITE_STATIC);
-	do {
-		result = sqlite3_step(stmt) ;
-		if (result == SQLITE_ROW) {
+	result = sqlite3_step(stmt);
+	while (result == SQLITE_ROW) {
+		if(strcmp(categoria.nombreCategoria,sqlite3_column_text(stmt,1))==0){
 			id= sqlite3_column_int(stmt, 0);
 		}
-		} while (result == SQLITE_ROW);
+		result = sqlite3_step(stmt);
+		} ;
 	sqlite3_finalize(stmt);
 	return id;
 }
@@ -30,19 +31,22 @@ void insertarCategoriasPorUsuario(int idUsuario,Categoria categoria, sqlite3 *db
 }
 
 void crearCategoria(int idUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
+	int id;
     Categoria nuevaCategoria;
 
     //utiliza el nombre de usuario del usuario que ha iniciado sesión
 
     printf("Escribe el nombre de la nueva categoría: "); fflush(stdout); fflush(stdin);
     scanf("%s", nuevaCategoria.nombreCategoria);
-
+    id=buscarIDCategoria(nuevaCategoria,db,stmt);
+    if(id==0){
     //Codigo para ejecutar el statement
     char insertarCategoria[] = "INSERT INTO Categorias(categoria) VALUES(?)";
     sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, nuevaCategoria.nombreCategoria, sizeof(nuevaCategoria.nombreCategoria), SQLITE_STATIC);
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+    }
 
     //Insertamos la categoria en la tabla categoriasPorUsuario
     insertarCategoriasPorUsuario(idUsuario, nuevaCategoria, db, stmt);
@@ -111,7 +115,7 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 
 	cargarCategoria(idU, db, stmt);
 	printf("Introduce el nombre de la categoria que quieres borrar: "); fflush(stdout); fflush(stdin);
-	gets(cat.nombreCategoria);
+	scanf("%s",cat.nombreCategoria);
 
 	id = buscarIDCategoria(cat, db, stmt);
 	if (id != 0) {
@@ -120,13 +124,10 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 		sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
 		int resultCant = sqlite3_step(stmt) ;
 		while (resultCant == SQLITE_ROW){
-			if(idU==sqlite3_column_int(stmt,0)){
 				cant++;
-			}
 			resultCant = sqlite3_step(stmt);
 		}
 		sqlite3_finalize(stmt);
-
 		if(cant == 1) {
 			char eliminarCat[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCat, sizeof(eliminarCat) + 1, &stmt, NULL);
