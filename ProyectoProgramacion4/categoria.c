@@ -4,7 +4,7 @@
 #include "sqlite3.h"
 
 int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
-	int result,id;
+	int result,id = 0;
 	char buscarID[]="SELECT id_c FROM categorias WHERE categoria = ?";
 	sqlite3_prepare_v2(db, buscarID, sizeof(buscarID) + 1, &stmt, NULL);
 	sqlite3_bind_text(stmt, 1, categoria.nombreCategoria, sizeof(categoria.nombreCategoria), SQLITE_STATIC);
@@ -75,12 +75,12 @@ void cargarCategoria(int idUsuario, sqlite3 *db,sqlite3_stmt *stmt) {
 	sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
 	resultCant = sqlite3_step(stmt) ;
 	while (resultCant == SQLITE_ROW){
-	        	if(idUsuario==sqlite3_column_int(stmt,0)){
-	        		i++;
-	        	}
-	        	resultCant = sqlite3_step(stmt);
-
+		if(idUsuario==sqlite3_column_int(stmt,0)){
+			i++;
+		}
+		resultCant = sqlite3_step(stmt);
 	}
+
 	int arrayId[i];
 	i=0;
 	char pegarArrayCat[] = "SELECT * FROM categoriasUsuario";
@@ -99,5 +99,56 @@ void cargarCategoria(int idUsuario, sqlite3 *db,sqlite3_stmt *stmt) {
 		printf("%i. %s\n",u+1, buscarCategoriaPorId(arrayId[u],db,stmt).nombreCategoria);
 	}
 
+}
+
+void modificarCategoria(char nomCat, sqlite3 *db,sqlite3_stmt *stmt) {
+
+}
+
+void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
+	Categoria cat;
+	int cant = 0, id;
+
+	cargarCategoria(idU, db, stmt);
+	printf("Introduce el nombre de la categoria que quieres borrar: "); fflush(stdout); fflush(stdin);
+	gets(cat.nombreCategoria);
+
+	id = buscarIDCategoria(cat, db, stmt);
+	if (id != 0) {
+		//Encuentro cuantas veces apareze la categoria en categoriasPorUsuario
+		char buscarCantCat[] = "SELECT * FROM categoriasUsuario";
+		sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
+		int resultCant = sqlite3_step(stmt) ;
+		while (resultCant == SQLITE_ROW){
+			if(idU==sqlite3_column_int(stmt,0)){
+				cant++;
+			}
+			resultCant = sqlite3_step(stmt);
+		}
+		sqlite3_finalize(stmt);
+
+		if(cant == 1) {
+			char eliminarCat[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ?";
+			sqlite3_prepare_v2(db, eliminarCat, sizeof(eliminarCat) + 1, &stmt, NULL);
+			sqlite3_bind_int(stmt, 1, id);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+
+			char eliminarCat2[] = "DELETE FROM Categorias WHERE id_c = ?";
+			sqlite3_prepare_v2(db, eliminarCat2, sizeof(eliminarCat2) + 1, &stmt, NULL);
+			sqlite3_bind_int(stmt, 1, id);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+		} else {
+			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
+			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
+			sqlite3_bind_int(stmt, 1, id);
+			sqlite3_bind_int(stmt, 2, idU);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+		}
+	} else {
+		printf("ERROR: Esta categoria no existe!!\n"); fflush(stdout);
+	}
 }
 

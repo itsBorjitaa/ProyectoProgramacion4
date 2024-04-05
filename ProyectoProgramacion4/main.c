@@ -150,6 +150,7 @@ int main(){
 										    case '3':
 										    	printf("ELIMINAR CATEGORÍA:\n");
 										    	fflush(stdout);
+										    	eliminarCategoria(idActual, db, stmt);
 										    	break;
 										    case '4':
 										    	printf("VER CATEGORÍAS DEL USUARIO:\n");
