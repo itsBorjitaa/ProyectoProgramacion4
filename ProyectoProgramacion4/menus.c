@@ -74,3 +74,19 @@ char menuSaldo() {
     scanf(" %c", &opcion);
     return opcion;
 }
+
+char menuModificarGastos() {
+	char opcion;
+	printf("────────────── MODIFICAR GASTOS ─────────────\n");
+	printf("1. Modificar fecha\n");
+	printf("2. Modificar concepto\n");
+	printf("3. Modificar codste\n");
+	printf("4. Modificar categoria\n");
+	printf("0. Cerrar sesión\n");
+	printf("──────────────────────────────────────────\n");
+	printf("Elige una opción: ");
+	fflush(stdout);
+	fflush(stdin);
+	scanf(" %c", &opcion);
+	return opcion;
+}
