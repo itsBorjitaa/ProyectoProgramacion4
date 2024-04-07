@@ -152,6 +152,14 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_int(stmt, 2, id);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
+
+			char modificarGastos[] = "UPDATE gastos SET categoria = ? WHERE categoria = ?";
+			sqlite3_prepare_v2(db, modificarGastos, sizeof(modificarGastos) + 1, &stmt, NULL);
+			sqlite3_bind_text(stmt, 1, cat2.nombreCategoria, sizeof(cat2.nombreCategoria), SQLITE_STATIC);
+			sqlite3_bind_text(stmt, 2, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+
 		} else {
 			//Si aparece mas de una vez se crea una nueva categoria con ese nombre y su respectiva linea en la tabla CategoriasPorUsuario
 			crearCategoria2(idU,cat2, db, stmt);
@@ -159,6 +167,15 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
 			sqlite3_bind_int(stmt, 1, id);
+			sqlite3_bind_int(stmt, 2, idU);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+
+			//Ademas se accede a los gastos con esa categoria y se les cambia el nombre a la nueva
+			char modificarGastosMul[] = "UPDATE gastos SET categoria = ? WHERE categoria = ? AND id_u_c = ?";
+			sqlite3_prepare_v2(db, modificarGastosMul, sizeof(modificarGastosMul) + 1, &stmt, NULL);
+			sqlite3_bind_text(stmt, 1, cat2.nombreCategoria, sizeof(cat2.nombreCategoria), SQLITE_STATIC);
+			sqlite3_bind_text(stmt, 2, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
 			sqlite3_bind_int(stmt, 2, idU);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
