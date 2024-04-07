@@ -109,6 +109,7 @@ int main(){
 												break;
 											case '1':
 												printf("AÑADIR GASTO:\n");
+												crearGasto(idActual,db,stmt);
 												fflush(stdout);
 												break;
 										    case '2':

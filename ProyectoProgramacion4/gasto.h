@@ -3,16 +3,21 @@
 
 #include <time.h>
 #include "usuario.h"
+#include "sqlite3.h"
 
+typedef struct{
+	int dia;
+	int mes;
+	int anyo;
+}fecha;
 typedef struct gasto{
-	int idGasto;
-	char nombreUsuario[20];
-	int idCategoria;
-	double cantidad;
-	struct tm fecha;
+	int idUsuario;
+	fecha fecha;
+	double coste;
+	char concepto[30];
+	char categoria[30];
 }Gasto;
 
-void pedirFecha(struct tm *fecha);
-Gasto pedirGasto(Usuario usuario);
+void crearGasto(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* GASTO_H_ */
