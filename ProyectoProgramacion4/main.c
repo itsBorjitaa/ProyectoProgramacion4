@@ -125,6 +125,7 @@ int main(){
 										    	arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
 										    	imprimirListaGastos(idActual,db,stmt);
 										    	fflush(stdout);
+										    	eliminarGasto(arrayCodigosGastos,db,stmt);
 										    	break;
 										    case '4':
 										    	printf("VER GASTOS DEL USUARIO:\n");

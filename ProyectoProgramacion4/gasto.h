@@ -21,5 +21,6 @@ typedef struct gasto{
 void crearGasto(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt);
 int *cargarGastosUsuario(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt);
 void imprimirListaGastos(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt);
+void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* GASTO_H_ */
