@@ -90,6 +90,7 @@ int main(){
 				idActual=iniciarSesionBD(u,db,stmt);
 				if(idActual>0){
 					printf("Bienvenido, %s!\n", u->nombre); fflush(stdout);escribirLog("Sesión iniciada");fflush(stdout);
+					int *arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
 						do{
 							opcionU = menuPrincipal();
 							switch(opcionU){
@@ -110,18 +111,24 @@ int main(){
 											case '1':
 												printf("AÑADIR GASTO:\n");
 												crearGasto(idActual,db,stmt);
+												arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
 												fflush(stdout);
 												break;
 										    case '2':
 										    	printf("MODIFICAR GASTO:\n");
+										    	arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
+										    	imprimirListaGastos(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    case '3':
 										    	printf("ELIMINAR GASTO:\n");
+										    	arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
+										    	imprimirListaGastos(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    case '4':
 										    	printf("VER GASTOS DEL USUARIO:\n");
+										    	imprimirListaGastos(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    default:
