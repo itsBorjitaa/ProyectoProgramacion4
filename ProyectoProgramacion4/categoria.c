@@ -219,10 +219,24 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_int(stmt, 1, id);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
+
+			char eliminarGastos[] = "DELETE FROM Gastos WHERE categoria = ?";
+			sqlite3_prepare_v2(db, eliminarGastos, sizeof(eliminarGastos) + 1, &stmt, NULL);
+			sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+
 		} else {
 			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
 			sqlite3_bind_int(stmt, 1, id);
+			sqlite3_bind_int(stmt, 2, idU);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+
+			char eliminarGastosMul[] = "DELETE FROM Gastos WHERE categoria = ? AND id_u_c = ?";
+			sqlite3_prepare_v2(db, eliminarGastosMul, sizeof(eliminarGastosMul) + 1, &stmt, NULL);
+			sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
 			sqlite3_bind_int(stmt, 2, idU);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);

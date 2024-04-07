@@ -118,7 +118,7 @@ void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt){
 	int numeroGas;
 
 	printf("Introduce el numero de el gasto que quieres borrar: "); fflush(stdout); fflush(stdin);
-	scanf("%d",numeroGas);
+	scanf("%d",&numeroGas);
 
 	char eliminarGas[] = "DELETE FROM Gastos WHERE codigo = ?";
 	sqlite3_prepare_v2(db, eliminarGas, sizeof(eliminarGas) + 1, &stmt, NULL);
@@ -126,3 +126,4 @@ void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 }
+
