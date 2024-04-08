@@ -44,7 +44,7 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 	char crearGasto[]="CREATE TABLE IF NOT EXISTS Gastos "
 			"(codigo INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_u_c INTEGER NOT NULL, "
 			"fecha TEXT NOT NULL, concepto TEXT NOT NULL, "
-			"coste REAL NOT NULL, categoria TEXT NOT NULL, "
+			"coste REAL NOT NULL, categoria STRING NOT NULL, "
 			"FOREIGN KEY(id_u_c) REFERENCES Usuario(id_u) ON DELETE CASCADE)";
 	sqlite3_prepare_v2(db, crearGasto, sizeof(crearGasto) + 1, &stmt, NULL);
 	sqlite3_step(stmt);

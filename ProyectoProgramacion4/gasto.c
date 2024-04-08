@@ -17,24 +17,27 @@ void crearGasto(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
 
     //se le pide al usuario que ingrese la fecha
     printf("Ingrese el día: ");
-       	   fflush(stdout);
-       scanf("%d", &nuevoGasto.fecha.dia);
+       	fflush(stdout);
+       	fflush(stdin);
+        scanf("%d", &nuevoGasto.fecha.dia);
      printf("Ingrese el mes: ");
-           fflush(stdout);
-           scanf("%d", &nuevoGasto.fecha.mes);
+        fflush(stdout);
+        fflush(stdin);
+        scanf("%d", &nuevoGasto.fecha.mes);
      printf("Ingrese el año: ");
         fflush(stdout);
-        scanf("%d", &nuevoGasto.fecha.anyo);
         fflush(stdin);
+        scanf("%d", &nuevoGasto.fecha.anyo);
      if(1<=nuevoGasto.fecha.dia&&nuevoGasto.fecha.dia<=31&&1<=nuevoGasto.fecha.mes&&nuevoGasto.fecha.mes<=12&&1<=nuevoGasto.fecha.anyo){
         sprintf(stringFecha,"%d/%d/%d",nuevoGasto.fecha.dia,nuevoGasto.fecha.mes,nuevoGasto.fecha.anyo);
+        fflush(stdin);
+    printf("Escribe el concepto: ");
         fflush(stdout);
-    printf("Escribe el concepto:");
-         fflush(stdout);
-         scanf("%s", nuevoGasto.concepto);
-    printf("Escribe el coste: ");
-             fflush(stdout);
-             scanf("%lf", &nuevoGasto.coste);
+        scanf("%s", nuevoGasto.concepto);
+    printf("Escribe el coste:");
+        fflush(stdout);
+        fflush(stdin);
+        scanf("%lf", &nuevoGasto.coste);
     if(nuevoGasto.coste>0){
     imprimirCategoria(IdUsuario,db,stmt);
     printf("Escribe la categoría: ");
@@ -94,9 +97,6 @@ int *cargarGastosUsuario(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt){
 		result=sqlite3_step(stmt);
 	}
 	sqlite3_finalize(stmt);
-	for(int u=0;u<tam;u++){
-		printf("%i\n",arr[u]);fflush(stdout);
-	}
 	return arr;
 }
 void imprimirListaGastos(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt){
@@ -126,4 +126,20 @@ void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 }
-
+void eliminarGastoCategoria(int idU,Categoria cat,sqlite3 *db,sqlite3_stmt *stmt){
+	char eliminarGastoCategoria[] = "DELETE FROM Gastos WHERE categoria=? AND id_u_c=?";
+	sqlite3_prepare_v2(db, eliminarGastoCategoria, sizeof(eliminarGastoCategoria) + 1, &stmt, NULL);
+	sqlite3_bind_text(stmt, 1, cat.nombreCategoria, -1, SQLITE_STATIC);
+	sqlite3_bind_int(stmt, 2, idU);
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+}
+void modificarGastoCategoria(int idU,Categoria cat,Categoria cat2,sqlite3 *db,sqlite3_stmt *stmt){
+	char modificarGastosMul[] = "UPDATE gastos SET categoria=? WHERE categoria=? AND id_u_c =?";
+	sqlite3_prepare_v2(db, modificarGastosMul, sizeof(modificarGastosMul) + 1, &stmt, NULL);
+	sqlite3_bind_text(stmt, 1, cat2.nombreCategoria, -1, SQLITE_STATIC);
+	sqlite3_bind_text(stmt, 2, cat.nombreCategoria, -1, SQLITE_STATIC);
+	sqlite3_bind_int(stmt,3, idU);
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+}

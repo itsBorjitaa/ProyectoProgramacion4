@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "sqlite3.h"
+#include "gasto.h"
 
 int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
 	int result,id = 0;
@@ -135,6 +136,7 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 	if (id != 0){
 		printf("Escribe el nuevo nombre de la categoria: ");fflush(stdout); fflush(stdin);
 		scanf("%s",cat2.nombreCategoria);
+		modificarGastoCategoria(idU,cat,cat2,db,stmt);
 		//Encuentro cuantas veces aparece la categoria en categorias usuario
 		char buscarCantCat[] = "SELECT * FROM categoriasUsuario";
 		sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
@@ -171,14 +173,6 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
 
-			//Ademas se accede a los gastos con esa categoria y se les cambia el nombre a la nueva
-			char modificarGastosMul[] = "UPDATE gastos SET categoria = ? WHERE categoria = ? AND id_u_c = ?";
-			sqlite3_prepare_v2(db, modificarGastosMul, sizeof(modificarGastosMul) + 1, &stmt, NULL);
-			sqlite3_bind_text(stmt, 1, cat2.nombreCategoria, sizeof(cat2.nombreCategoria), SQLITE_STATIC);
-			sqlite3_bind_text(stmt, 2, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
-			sqlite3_bind_int(stmt, 2, idU);
-			sqlite3_step(stmt);
-			sqlite3_finalize(stmt);
 		}
 	}
 	else{
@@ -207,6 +201,7 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			resultCant = sqlite3_step(stmt);
 		}
 		sqlite3_finalize(stmt);
+		eliminarGastoCategoria(idU,cat,db,stmt);
 		if(cant == 1) {
 			char eliminarCat[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCat, sizeof(eliminarCat) + 1, &stmt, NULL);
@@ -220,12 +215,6 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
 
-			char eliminarGastos[] = "DELETE FROM Gastos WHERE categoria = ?";
-			sqlite3_prepare_v2(db, eliminarGastos, sizeof(eliminarGastos) + 1, &stmt, NULL);
-			sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
-			sqlite3_step(stmt);
-			sqlite3_finalize(stmt);
-
 		} else {
 			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
@@ -234,12 +223,6 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
 
-			char eliminarGastosMul[] = "DELETE FROM Gastos WHERE categoria = ? AND id_u_c = ?";
-			sqlite3_prepare_v2(db, eliminarGastosMul, sizeof(eliminarGastosMul) + 1, &stmt, NULL);
-			sqlite3_bind_text(stmt, 1, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
-			sqlite3_bind_int(stmt, 2, idU);
-			sqlite3_step(stmt);
-			sqlite3_finalize(stmt);
 		}
 	} else {
 		printf("ERROR: Esta categoria no existe!!\n"); fflush(stdout);
