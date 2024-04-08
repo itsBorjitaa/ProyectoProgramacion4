@@ -25,5 +25,6 @@ void imprimirListaGastos(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt);
 void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt);
 void eliminarGastoCategoria(int idU,Categoria cat,sqlite3 *db,sqlite3_stmt *stmt);
 void modificarGastoCategoria(int idU,Categoria cat,Categoria cat2,sqlite3 *db,sqlite3_stmt *stmt);
+void modificarGasto(int array[],int idU, sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* GASTO_H_ */

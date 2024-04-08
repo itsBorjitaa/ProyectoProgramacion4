@@ -124,6 +124,7 @@ int main(){
 										    	printf("MODIFICAR GASTO:\n");
 										    	arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
 										    	imprimirListaGastos(idActual,db,stmt);
+										    	modificarGasto(arrayCodigosGastos, idActual, db, stmt);
 										    	fflush(stdout);
 										    	break;
 										    case '3':

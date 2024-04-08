@@ -15,7 +15,7 @@ int buscarIDCategoria(Categoria categoria,sqlite3 *db,sqlite3_stmt *stmt){
 			id= sqlite3_column_int(stmt, 0);
 		}
 		result = sqlite3_step(stmt);
-		} ;
+	}
 	sqlite3_finalize(stmt);
 	return id;
 }
@@ -41,12 +41,12 @@ void crearCategoria(int idUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
     scanf("%s", nuevaCategoria.nombreCategoria);
     id=buscarIDCategoria(nuevaCategoria,db,stmt);
     if(id==0){
-    //Codigo para ejecutar el statement
-    char insertarCategoria[] = "INSERT INTO Categorias(categoria) VALUES(?)";
-    sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
-    sqlite3_bind_text(stmt, 1, nuevaCategoria.nombreCategoria, sizeof(nuevaCategoria.nombreCategoria), SQLITE_STATIC);
-    sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
+    	//Codigo para ejecutar el statement
+    	char insertarCategoria[] = "INSERT INTO Categorias(categoria) VALUES(?)";
+    	sqlite3_prepare_v2(db, insertarCategoria, sizeof(insertarCategoria) + 1, &stmt, NULL);
+    	sqlite3_bind_text(stmt, 1, nuevaCategoria.nombreCategoria, sizeof(nuevaCategoria.nombreCategoria), SQLITE_STATIC);
+    	sqlite3_step(stmt);
+    	sqlite3_finalize(stmt);
     }
 
     //Insertamos la categoria en la tabla categoriasPorUsuario
@@ -78,15 +78,15 @@ Categoria buscarCategoriaPorId(int id, sqlite3 *db,sqlite3_stmt *stmt) {
 	int result;
 
 	char buscarCat[]="SELECT * FROM categorias";
-		sqlite3_prepare_v2(db, buscarCat, sizeof(buscarCat) + 1, &stmt, NULL);
-		result=sqlite3_step(stmt);
-				while (result == SQLITE_ROW){
-					if(id==sqlite3_column_int(stmt,0)){
-						strcpy(cat.nombreCategoria,sqlite3_column_text(stmt,1));
-					}
-					result = sqlite3_step(stmt);
+	sqlite3_prepare_v2(db, buscarCat, sizeof(buscarCat) + 1, &stmt, NULL);
+	result=sqlite3_step(stmt);
+			while (result == SQLITE_ROW){
+				if(id==sqlite3_column_int(stmt,0)){
+					strcpy(cat.nombreCategoria,sqlite3_column_text(stmt,1));
 				}
-		sqlite3_finalize(stmt);
+				result = sqlite3_step(stmt);
+			}
+	sqlite3_finalize(stmt);
 
 	return cat;
 }
@@ -110,13 +110,13 @@ void imprimirCategoria(int idUsuario, sqlite3 *db,sqlite3_stmt *stmt) {
 	sqlite3_prepare_v2(db, pegarArrayCat, sizeof(pegarArrayCat) + 1, &stmt, NULL);
 	resultCant = sqlite3_step(stmt) ;
 	while (resultCant == SQLITE_ROW){
-	        	if(idUsuario==sqlite3_column_int(stmt,0)){
-	        		arrayId[i]=sqlite3_column_int(stmt,1);
-	        		i++;
-	        	}
-	        	resultCant = sqlite3_step(stmt);
-
+		if(idUsuario==sqlite3_column_int(stmt,0)){
+			arrayId[i]=sqlite3_column_int(stmt,1);
+	        i++;
+		}
+	    resultCant = sqlite3_step(stmt);
 	}
+
 	sqlite3_finalize(stmt);
 	for(int u=0;u<i;u++){
 		printf("%i. %s\n",u+1, buscarCategoriaPorId(arrayId[u],db,stmt).nombreCategoria);
@@ -142,7 +142,7 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 		sqlite3_prepare_v2(db, buscarCantCat, sizeof(buscarCantCat) + 1, &stmt, NULL);
 		int resultCant = sqlite3_step(stmt) ;
 		while (resultCant == SQLITE_ROW){
-				cant++;
+			cant++;
 			resultCant = sqlite3_step(stmt);
 		}
 		sqlite3_finalize(stmt);
