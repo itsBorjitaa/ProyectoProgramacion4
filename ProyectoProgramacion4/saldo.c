@@ -42,7 +42,7 @@ void modificarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_bind_int(stmt,2,idU);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
-	printf("Saldo modificado correctamente!");fflush(stdout);
+	printf("Saldo modificado correctamente!\n");fflush(stdout);
 	escribirLog("Saldo modificado correctamente!");
 }
 void restarSaldo(double coste,int idU,sqlite3 *db,sqlite3_stmt *stmt){

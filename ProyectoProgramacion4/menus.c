@@ -19,7 +19,7 @@ char menuLogin() {
 
 char menuPrincipal(int idU,sqlite3 *db,sqlite3_stmt *stmt) {
     char opcion;
-    printf("──────────────── SALDO: ────────────────\n");
+    printf("────────────────------────────────────\n");
     printf("1. Gastos\n");
     printf("2. Categorías\n");
     printf("3. Saldo\n");
