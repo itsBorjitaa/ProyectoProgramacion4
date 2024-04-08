@@ -128,7 +128,7 @@ void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_bind_int(stmt, 1, array[numeroGas-1]);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
-	printf("Gasto eliminado exitosamente!");fflush(stdout);
+	printf("Gasto eliminado exitosamente!\n");fflush(stdout);
 	escribirLog("Gasto eliminado exitosamente!");
 }
 void eliminarGastoCategoria(int idU,Categoria cat,sqlite3 *db,sqlite3_stmt *stmt){
