@@ -65,7 +65,13 @@ void InicializarBD(sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_prepare_v2(db, crearCategoriasUsuario, sizeof(crearCategoriasUsuario) + 1, &stmt, NULL);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
-
+	char crearSaldo[]="CREATE TABLE IF NOT EXISTS Saldos (id_u_s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+				"saldo REAL NOT NULL, "
+				"FOREIGN KEY(id_u_s) REFERENCES Usuario(id_u) "
+				"ON DELETE CASCADE)";
+		sqlite3_prepare_v2(db, crearSaldo, sizeof(crearSaldo) + 1, &stmt, NULL);
+		sqlite3_step(stmt);
+		sqlite3_finalize(stmt);
 }
 
 int main(){
