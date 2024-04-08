@@ -6,6 +6,7 @@
 #include "sqlite3.h"
 #include "categoria.h"
 #include "usuario.h"
+#include "saldo.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 #define DB_FILE "db.db"
@@ -98,7 +99,7 @@ int main(){
 					printf("Bienvenido, %s!\n", u->nombre); fflush(stdout);escribirLog("Sesión iniciada");fflush(stdout);
 					int *arrayCodigosGastos=cargarGastosUsuario(idActual,db,stmt);
 						do{
-							opcionU = menuPrincipal();
+							opcionU = menuPrincipal(idActual,db,stmt);
 							switch(opcionU){
 								case '0':
 									printf("Cerrando sesión...\n");
@@ -191,6 +192,7 @@ int main(){
 												break;
 										    case '1':
 										    	printf("MODIFICAR SALDO:\n");
+										    	modificarSaldo(idActual,db,stmt);
 										    	fflush(stdout);
 										    	break;
 										    default:
