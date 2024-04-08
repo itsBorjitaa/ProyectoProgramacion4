@@ -32,7 +32,7 @@ void mostrarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt){
 void modificarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	double nuevoSaldo;
 	mostrarSaldo(idU,db,stmt);
-	printf("Nuevo saldo?");
+	printf("Nuevo saldo: ");
 	fflush(stdout);
 	fflush(stdin);
 	scanf("%lf",&nuevoSaldo);

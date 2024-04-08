@@ -192,7 +192,7 @@ int main(){
 									break;
 								case '3':
 									do{
-										opcion = menuSaldo();
+										opcion = menuSaldo(idActual,db,stmt);
 										switch(opcion){
 											case '0':
 												printf("Volviendo atrás...\n");

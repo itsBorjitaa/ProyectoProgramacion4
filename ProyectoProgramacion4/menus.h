@@ -6,6 +6,6 @@ char menuLogin();
 char menuPrincipal(int idU,sqlite3 *db,sqlite3_stmt *stmt);
 char menuGastos();
 char menuCategorias();
-char menuSaldo();
+char menuSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* MENUS_H_ */

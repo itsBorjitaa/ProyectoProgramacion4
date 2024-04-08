@@ -65,11 +65,12 @@ char menuCategorias() {
     return opcion;
 }
 
-char menuSaldo() {
+char menuSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt) {
     char opcion;
     printf("────────────── MODIFICAR SALDO ─────────────\n");
     printf("1. Modificar saldo\n");
     printf("0. Volver\n");
+    mostrarSaldo(idU,db,stmt);
     printf("──────────────────────────────────────────\n");
     printf("Elige una opción: ");
     fflush(stdout);
