@@ -7,6 +7,7 @@
 #include "categoria.h"
 #include "usuario.h"
 #include "saldo.h"
+#include "properties.h"
 #define NOMFICH "usuarios.txt"
 #define LOGFILE "log.log"
 #define DB_FILE "db.db"
@@ -81,6 +82,13 @@ int main(){
 	Usuario *u;
 	int temp,idActual;
 	char opcion,opcionU;
+
+	Properties prop = leerPropiedades("config.properties");
+	printf("Nombre de la aplicación: %s\n", prop.app_nombre);
+	printf("Versión de la aplicación: %s\n", prop.app_version);
+	printf("Última actualización: %s\n", prop.ultima_actualizacion);
+	printf("DB_FILE: %s\n", prop.db_file);
+	printf("LOGFILE: %s\n", prop.logfile);
 
 	sqlite3_open(DB_FILE, &db);
 	InicializarBD(db,stmt);
