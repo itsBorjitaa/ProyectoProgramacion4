@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "sqlite3.h"
+#include "saldo.h"
 
 void insertarUsuarioBD(sqlite3 *db,sqlite3_stmt *stmt) {
 	int existe;
@@ -27,6 +28,8 @@ void insertarUsuarioBD(sqlite3 *db,sqlite3_stmt *stmt) {
 	sqlite3_bind_text(stmt, 2, contrasenya, sizeof(contrasenya), SQLITE_STATIC);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
+	int id=existeUsuarioBD(nombre,db,stmt);
+	crearSaldo(id,db,stmt);
 	printf("Se ha registrado correctamente!\n");
 	escribirLog("Se ha registrado correctamente");
 	}
@@ -74,7 +77,7 @@ int existeUsuarioBD(char nombre[],sqlite3 *db,sqlite3_stmt *stmt){
 		result=sqlite3_step(stmt);
 		while (result == SQLITE_ROW){
 			if(strcmp(nombre,sqlite3_column_text(stmt,1))==0){
-				size++;
+				size=sqlite3_column_int(stmt,0);
 			}
 			result = sqlite3_step(stmt);
 		}

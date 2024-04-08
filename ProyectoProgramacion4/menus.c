@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "menus.h"
+#include "saldo.h"
+#include "sqlite3.h"
 
 char menuLogin() {
     char opcion;
@@ -15,13 +17,14 @@ char menuLogin() {
     return opcion;
 }
 
-char menuPrincipal() {
+char menuPrincipal(int idU,sqlite3 *db,sqlite3_stmt *stmt) {
     char opcion;
     printf("──────────────── SALDO: ────────────────\n");
     printf("1. Gastos\n");
     printf("2. Categorías\n");
     printf("3. Saldo\n");
     printf("0. Cerrar sesión\n");
+    mostrarSaldo(idU,db,stmt);
     printf("──────────────────────────────────────\n");
     printf("Elige una opción: ");
     fflush(stdout);

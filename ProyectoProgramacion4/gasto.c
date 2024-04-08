@@ -18,14 +18,17 @@ void crearGasto(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
 
     //se le pide al usuario que ingrese la fecha
     printf("Ingrese el día: ");
+
        	fflush(stdout);
        	fflush(stdin);
         scanf("%d", &nuevoGasto.fecha.dia);
      printf("Ingrese el mes: ");
+
         fflush(stdout);
         fflush(stdin);
         scanf("%d", &nuevoGasto.fecha.mes);
      printf("Ingrese el año: ");
+
         fflush(stdout);
         fflush(stdin);
         scanf("%d", &nuevoGasto.fecha.anyo);
@@ -148,15 +151,19 @@ void modificarGasto(int array[],int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	Categoria categoria;
 	Gasto g;
 
-	printf("Introduce el numero de el gasto que quieres borrar: "); fflush(stdout); fflush(stdin);
+	printf("Introduce el numero de el gasto que quieres borrar: ");
+
+	fflush(stdout);
+	fflush(stdin);
 	scanf("%d",&numeroGas);
 
 	printf("Ingrese el día: ");
+
 	fflush(stdout);
 	fflush(stdin);
-
 	scanf("%d", &g.fecha.dia);
 	printf("Ingrese el mes: ");
+
 	fflush(stdout);
 	fflush(stdin);
 
@@ -164,14 +171,15 @@ void modificarGasto(int array[],int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	printf("Ingrese el año: ");
 	fflush(stdout);
 	fflush(stdin);
-
+	scanf("%d", &g.fecha.anyo);
 	 if(1<=g.fecha.dia&&g.fecha.dia<=31&&1<=g.fecha.mes&&g.fecha.mes<=12&&1<=g.fecha.anyo){
 	        sprintf(stringFecha,"%d/%d/%d",g.fecha.dia,g.fecha.mes,g.fecha.anyo);
 	        fflush(stdin);
 	        printf("Escribe el concepto: ");
 	        fflush(stdout);
+	        fflush(stdin);
 	        scanf("%s", g.concepto);
-	        printf("Escribe el coste:");
+	        printf("Escribe el coste: ");
 	        fflush(stdout);
 	        fflush(stdin);
 	        scanf("%lf", &g.coste);
