@@ -24,14 +24,32 @@ void mostrarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	while(result==SQLITE_ROW){
 		if(idU==sqlite3_column_int(stmt,0)){
 			printf("Saldo: %lf€\n",sqlite3_column_double(stmt,1));fflush(stdout);
-			printf("Hola");fflush(stdout);
 		}
 		result=sqlite3_step(stmt);
 	}
 	sqlite3_finalize(stmt);
 }
 void modificarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt){
+	double nuevoSaldo;
 	mostrarSaldo(idU,db,stmt);
+	printf("Nuevo saldo?");
+	fflush(stdout);
+	fflush(stdin);
+	scanf("%lf",&nuevoSaldo);
 	char modificarSaldo[]="UPDATE Saldos SET saldo=? WHERE id_u_s=?";
 	sqlite3_prepare_v2(db,modificarSaldo, sizeof(modificarSaldo)+1, &stmt, NULL);
+	sqlite3_bind_double(stmt,1,nuevoSaldo);
+	sqlite3_bind_int(stmt,2,idU);
+	sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+	printf("Saldo modificado correctamente!");fflush(stdout);
+	escribirLog("Saldo modificado correctamente!");
+}
+void restarSaldo(double coste,int idU,sqlite3 *db,sqlite3_stmt *stmt){
+		char restarSaldo[]="UPDATE Saldos SET saldo=saldo-? WHERE id_u_s=?";
+		sqlite3_prepare_v2(db,restarSaldo, sizeof(restarSaldo)+1, &stmt, NULL);
+		sqlite3_bind_double(stmt,1,coste);
+		sqlite3_bind_int(stmt,2,idU);
+		sqlite3_step(stmt);
+		sqlite3_finalize(stmt);
 }

@@ -11,5 +11,6 @@
 void mostrarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt);
 void crearSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt);
 void modificarSaldo(int idU,sqlite3 *db,sqlite3_stmt *stmt);
+void restarSaldo(double coste,int idU,sqlite3 *db,sqlite3_stmt *stmt);
 
 #endif /* SALDO_H_ */

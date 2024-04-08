@@ -5,6 +5,7 @@
 #include "sqlite3.h"
 #include <stdlib.h>
 #include "menus.h"
+#include "saldo.h"
 
 //función para pedir al usuario que ingrese una fecha en el formato "dd/mm/aa"
 
@@ -61,8 +62,9 @@ void crearGasto(int IdUsuario,sqlite3 *db,sqlite3_stmt *stmt) {
         		sqlite3_bind_text(stmt, 5, nuevoGasto.categoria, -1, SQLITE_STATIC);
         		sqlite3_step(stmt);
         		sqlite3_finalize(stmt);
-
+        		restarSaldo(nuevoGasto.coste,IdUsuario,db,stmt);
         		printf("Gasto creado exitosamente!\n");fflush(stdout);
+        		escribirLog("Gasto creado exitosamente!");
         	}else{
         		printf("Esta categoria no existe!\n");fflush(stdout);
         	}
@@ -126,6 +128,8 @@ void eliminarGasto(int array[],sqlite3 *db,sqlite3_stmt *stmt){
 	sqlite3_bind_int(stmt, 1, array[numeroGas-1]);
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
+	printf("Gasto eliminado exitosamente!");fflush(stdout);
+	escribirLog("Gasto eliminado exitosamente!");
 }
 void eliminarGastoCategoria(int idU,Categoria cat,sqlite3 *db,sqlite3_stmt *stmt){
 	char eliminarGastoCategoria[] = "DELETE FROM Gastos WHERE categoria=? AND id_u_c=?";
@@ -151,7 +155,7 @@ void modificarGasto(int array[],int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	Categoria categoria;
 	Gasto g;
 
-	printf("Introduce el numero de el gasto que quieres borrar: ");
+	printf("Introduce el numero de el gasto que quieres modificar: ");
 
 	fflush(stdout);
 	fflush(stdin);
@@ -203,8 +207,8 @@ void modificarGasto(int array[],int idU,sqlite3 *db,sqlite3_stmt *stmt){
 	        		sqlite3_bind_int(stmt, 6, array[numeroGas-1]);
 	        		sqlite3_step(stmt);
 	        		sqlite3_finalize(stmt);
-
 	        		printf("Gasto modificado exitosamente!\n");fflush(stdout);
+	        		escribirLog("Gasto modificado exitosamente!");
 	        	}else{
 	        		printf("Esta categoria no existe!\n");fflush(stdout);
 	        	}

@@ -217,9 +217,6 @@ int main(){
 							}
 						}while(opcionU != '0');
 					}else{
-						printf("ERROR! La contraseña no es correcta\n");
-						fflush(stdout);
-						escribirLog("ERROR! La contraseña no es correcta");
 					}
 				break;
 			case '2':

@@ -69,7 +69,7 @@ char menuSaldo() {
     char opcion;
     printf("────────────── MODIFICAR SALDO ─────────────\n");
     printf("1. Modificar saldo\n");
-    printf("0. Cerrar sesión\n");
+    printf("0. Volver\n");
     printf("──────────────────────────────────────────\n");
     printf("Elige una opción: ");
     fflush(stdout);

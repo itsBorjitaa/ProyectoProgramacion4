@@ -161,7 +161,8 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_text(stmt, 2, cat.nombreCategoria, sizeof(cat.nombreCategoria), SQLITE_STATIC);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
-
+			printf("Categoria modificada correctamente!");fflush(stdout);
+			escribirLog("Categoria eliminada correctamente!");
 		} else {
 			//Si aparece mas de una vez se crea una nueva categoria con ese nombre y su respectiva linea en la tabla CategoriasPorUsuario
 			crearCategoria2(idU,cat2, db, stmt);
@@ -172,7 +173,8 @@ void modificarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_int(stmt, 2, idU);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
-
+			printf("Categoria modificada correctamente!");fflush(stdout);
+			escribirLog("Categoria eliminada correctamente!");
 		}
 	}
 	else{
@@ -214,7 +216,8 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_int(stmt, 1, id);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
-
+			printf("Categoria eliminada correctamente!");fflush(stdout);
+			escribirLog("Categoria eliminada correctamente!");
 		} else {
 			char eliminarCatU[] = "DELETE FROM categoriasUsuario WHERE id_c_cu = ? AND id_u_cu = ?";
 			sqlite3_prepare_v2(db, eliminarCatU, sizeof(eliminarCatU) + 1, &stmt, NULL);
@@ -222,7 +225,8 @@ void eliminarCategoria(int idU, sqlite3 *db,sqlite3_stmt *stmt) {
 			sqlite3_bind_int(stmt, 2, idU);
 			sqlite3_step(stmt);
 			sqlite3_finalize(stmt);
-
+			printf("Categoria eliminada correctamente!");fflush(stdout);
+			escribirLog("Categoria eliminada correctamente!");
 		}
 	} else {
 		printf("ERROR: Esta categoria no existe!!\n"); fflush(stdout);
